@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css">
+  <script src="https://code.jquery.com/jquery.js"></script> -->
+  <script src="js/bootstrap.js"></script>
+
 </head>
 
 <body>
@@ -15,7 +18,8 @@
     js = d.createElement(s); js.id = id;
     js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=486420108124872";
     fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
 
   <script>
     window.fbAsyncInit = function() {
@@ -96,15 +100,69 @@
 
     // Here we run a very simple test of the Graph API after login is successful. 
     // This testAPI() function is only called in those cases. 
+    // function testAPI() {
+    //   console.log('Welcome!  Fetching your information.... ');
+    //   FB.api('/me', function(response) {
+    //     console.log('Good to see you, ' + response.name + '.');
+    //   });
+    // }
     function testAPI() {
       console.log('Welcome!  Fetching your information.... ');
-      FB.api('/me', function(response) {
-        console.log('Good to see you, ' + response.name + '.');
-      });
+      FB.api(
+        {
+            method: 'fql.query',
+            // query: 'SELECT uid, first_name, last_name FROM user WHERE uid = 1036381129'
+            query: 'SELECT uid, name FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())'
+        },
+        function(data) {
+            var friends = data; 
+            // console.log(friends); 
+            window.friends = friends; 
+            var index1 = Math.floor(Math.random()*friends.length)+1;
+            var index2 = Math.floor(Math.random()*friends.length)+1;
+            var index3 = Math.floor(Math.random()*friends.length)+1;
+            var index4 = Math.floor(Math.random()*friends.length)+1;
+            var index5 = Math.floor(Math.random()*friends.length)+1; 
+            // console.log("index1 is", index1);
+            window.friend1 = friends[index1]
+            friend2 = friends[index2]
+            friend3 = friends[index3]
+            friend4 = friends[index4]
+            friend5 = friends[index5]
+            console.log(friend1, friend2, friend3, friend4, friend5);
+
+            window.tesFriends = []; 
+            tesFriends.push(friend1)
+            tesFriends.push(friend2)
+            tesFriends.push(friend3)
+            tesFriends.push(friend4)
+            tesFriends.push(friend5)
+
+            insertFriends(tesFriends); 
+
+            // insert html.   
+
+              //window.insertFriendsScript = $("#insertFriends").html();  
+           //  console.log(insertFriendsScript);
+        }
+    );
     }
   </script>
-
   
+
+
+<script>
+  function insertFriends(data){
+    {{#each data}}
+      console.log("does this even run?");
+        <div class="container">
+          <div class="jumbotron">
+            <h1>{{data.name}}</h1>
+          </div>
+        </div>
+    {{/each}} 
+  } 
+</script>
 
 <!--
   Below we include the Login Button social plugin. This button uses the JavaScript SDK to
@@ -115,10 +173,15 @@
   <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
 
 
+  <div class="containter" id="tesselate">
+    <!-- friends will be inserted here -->
+  </div>
 
 
-  <script src="https://code.jquery.com/jquery.js"></script>
-  <script src="js/bootstrap.js"></script>
+
+
+  <!-- // <script src="https://code.jquery.com/jquery.js"></script> -->
+  <!-- // <script src="js/bootstrap.js"></script> -->
 
 </body>
 </html>
