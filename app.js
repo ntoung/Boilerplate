@@ -10,6 +10,8 @@ var express 	= require('express'),
 	FB 			= require('fb');
 
 var app = express();
+var graph = require('fbgraph');
+
 
 if(!config.facebook.appId || !config.facebook.appSecret) {
     throw new Error('facebook appId and appSecret required in config.js');
