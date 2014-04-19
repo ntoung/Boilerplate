@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css">
-  <script src="https://code.jquery.com/jquery.js"></script> -->
+  <script src="https://code.jquery.com/jquery.js"></script>
   <script src="js/bootstrap.js"></script>
 
 </head>
@@ -149,32 +149,64 @@
     }
   </script>
   
+<script>
+  // here we'll GET all the data we want from the 5 friends based on their uid
+  function getPhoto(userID){
+      var url = '/' + userID + '/picture?type=normal';
+      console.log(url);
+      var picHtml = FB.api(url, function(response){
+        var picHtml="<img src='"+response.data.url+"'/>";
+        console.log("the value about to returned:", picHtml)
+        return picHtml;
+        // $("#tesselate").append(pic);
+      })
+      console.log("pic html from in getPhoto()", picHtml);
+      return picHtml;
+  }
 
+</script>
 
 <script>
-  function insertFriends(data){
-    {{#each data}}
-      console.log("does this even run?");
-        <div class="container">
-          <div class="jumbotron">
-            <h1>{{data.name}}</h1>
-          </div>
-        </div>
-    {{/each}} 
+  function insertFriends(friends){
+    // console.log("how about this?");
+    // console.log(data);
+    
+    for( var i = 0; i<friends.length; i++){
+      var friend = friends[i];
+      var nameHtml = '<li><h3> <a href="http://facebook.com/profile.php?id=' +
+              friend.uid + '">' + 
+              friend.name + 
+              '</a></h3></li>'; 
+      
+      
+      // picHtml = getPhoto(friend.uid); 
+      // namePic = nameHtml + picHtml; 
+      $("#tesselate").append(nameHtml);
+    }
   } 
 </script>
 
 <!--
   Below we include the Login Button social plugin. This button uses the JavaScript SDK to
   present a graphical Login button that triggers the FB.login() function when clicked. -->
+  <div class="container">
+     <fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
+      <div id="fb-root"></div>
+      <br>
+      <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>   
+  </div>
+ 
 
-  <fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
-  <div id="fb-root"></div>
-  <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
 
-
-  <div class="containter" id="tesselate">
+  <div class="containter" >
     <!-- friends will be inserted here -->
+    <div class="jumbotron">
+      <h2> Here are 5 of your friends to catch up with!</h2>
+      <h3> Click their name to see what they're up to :)</h3>
+    </div>
+    <ul id="tesselate">
+      
+    </ul>
   </div>
 
 
