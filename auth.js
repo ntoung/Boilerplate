@@ -2,6 +2,13 @@
 var dotenv = require('dotenv');
 dotenv.load();
 
+var fb = require('fb');
+//var fb
+// fb.set('client_id', process.env.facebook_app_id);
+// fb.set('client_secret', process.env.facebook_app_secret);
+
+exports.fb = fb;
+
 
 /**
 * Add your authentication apis here with example like the bottom
